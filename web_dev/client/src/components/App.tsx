@@ -10,15 +10,11 @@ function App() {
   const [data, setData] = useState(null);
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    fetch('http://localhost:5001/api')
-      .then((response) => response.json())
-      .then((data) => setData(data.message));
-  }, []);
+  const [img, setImg] = useState<File | null>(null)
 
   return <div ><Grid className='header'>
     <div className='title'>Scene2Song</div>
-  </Grid> <div className='main'>{clicked ? (loading ? <Loading /> : <Results setClicked={setClicked} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} />}</div></div >;
+  </Grid> <div className='main'>{clicked ? (loading ? <Loading /> : <Results setClicked={setClicked} img={img} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} />}</div></div >;
 }
 
 export default App;

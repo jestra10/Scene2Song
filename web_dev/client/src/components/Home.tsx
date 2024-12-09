@@ -7,14 +7,15 @@ interface Props {
     setClicked: Dispatch<SetStateAction<boolean>>;
     loading: boolean;
     setLoading: Dispatch<SetStateAction<boolean>>;
+    img: File | null;
+    setImg: Dispatch<SetStateAction<File | null>>;
 }
 export function Home(props: Props) {
     const [data, setData] = useState(null);
-    const [img, setImg] = useState<File>();
     const upload = async () => {
         props.setClicked(true); //change the page
         props.setLoading(true)
-        if (!img) {
+        if (!props.img) {
             console.error('No file selected.');
             props.setClicked(false);
             props.setLoading(false);
@@ -22,7 +23,7 @@ export function Home(props: Props) {
 
         }
         const formData = new FormData()
-        formData.append('file', img)
+        formData.append('file', props.img)
         try {
             const response = await fetch('http://localhost:5001/upload', {
                 method: 'POST',
@@ -48,7 +49,7 @@ export function Home(props: Props) {
                 </Grid2>
                 <input className='fileText' type="file" onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
-                        setImg(e.target.files[0]);
+                        props.setImg(e.target.files[0]);
                     }
                 }} />
                 <button className='imageButton' onClick={upload}>Upload Image</button>

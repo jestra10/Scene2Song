@@ -32,3 +32,14 @@
     background-color: rgb(47, 63, 41) !important;
     color: rgb(171, 224, 159) !important;
 }
+
+.resultsPaper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    width: 90vw;
+    justify-content: center;
+    background-color: rgb(47, 63, 41) !important;
+    color: rgb(171, 224, 159) !important;
+}
