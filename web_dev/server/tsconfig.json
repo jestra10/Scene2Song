@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Use ES6 as the target JavaScript version
+    "module": "ESNext", // Use ESNext modules
+    "moduleResolution": "node", // Resolves modules like Node.js
+    "jsx": "react-jsx", // Enable JSX support for React 17+
+    "strict": true, // Enable strict mode for TypeScript
+    "esModuleInterop": true // Allow default imports for non-ES module libraries
+  },
+  "include": [
+    "src"
+  ], // Include the src directory
+  "exclude": [
+    "node_modules"
+  ] // Exclude node_modules from compilation
+}
