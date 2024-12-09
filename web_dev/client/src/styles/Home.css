@@ -13,7 +13,7 @@
     height: 25vh;
     width: 40vw;
     justify-content: baseline;
-    background-color: rgb(47, 63, 41);
+    background-color: rgb(47, 63, 41) !important;
 }
 
 .paperTitle {

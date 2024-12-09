@@ -38,8 +38,37 @@
     display: flex;
     flex-direction: column;
     height: 70vh;
-    width: 90vw;
-    justify-content: center;
+    width: 60vw;
+    justify-content: flex-start;
     background-color: rgb(47, 63, 41) !important;
     color: rgb(171, 224, 159) !important;
+    position: relative;
+    /* Keeps the Paper in the document flow */
+    margin: 20px auto;
+    /* Centers the Paper horizontally */
+    /* Adjust width as needed */
+    max-height: 80vh;
+    /* Constrain height to viewport */
+    overflow-y: auto;
+    /* Enable vertical scrolling when content overflows */
+    padding: 30px;
+    /* Internal spacing */
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.resultImg {
+    width: 35vw;
+    /* Set desired width */
+    height: auto;
+    max-height: 40vh;
+    /* Maintain aspect ratio */
+    padding-bottom: 40px;
+    border-color: rgb(171, 224, 159);
+    border-width: 30px;
+}
+
+.grid {
+    justify-content: center;
 }

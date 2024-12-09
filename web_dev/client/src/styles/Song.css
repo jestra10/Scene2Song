@@ -1,0 +1,16 @@
+.song {
+    justify-content: center;
+    border-radius: 10px;
+    background-color: rgb(171, 224, 159);
+    padding: 2vh;
+    font-size: medium;
+    color: black;
+
+}
+
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+}
