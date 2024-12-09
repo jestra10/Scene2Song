@@ -31,6 +31,7 @@ const uploadImg = multer({ storage })
 app.post('/upload', uploadImg.single('file'), (req, res) => {
     console.log(req.body)
     console.log(req.file)
+    res.json({ success: true, message: 'Upload received!' });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
