@@ -1,4 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Grid2, Paper } from '@mui/material';
+import '../styles/Home.css'
 
 interface Props {
     clicked: boolean;
@@ -39,10 +41,17 @@ export function Home(props: Props) {
 
 
     return <div className='homePage'>
-        <input type="file" onChange={(e) => {
-            if (e.target.files && e.target.files.length > 0) {
-                setImg(e.target.files[0]);
-            }
-        }} />
-        <button onClick={upload}>Upload Image</button></div>;
+        <Paper className="homePaper" elevation={5}>
+            <Grid2>
+                <Grid2>
+                    <div className='paperTitle'>Upload a Scene</div>
+                </Grid2>
+                <input className='fileText' type="file" onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                        setImg(e.target.files[0]);
+                    }
+                }} />
+                <button className='imageButton' onClick={upload}>Upload Image</button>
+            </Grid2>
+        </Paper></div>;
 }

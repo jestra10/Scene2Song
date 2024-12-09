@@ -39,15 +39,29 @@
 }
 
 .header {
-  background-color: rgba(237, 222, 164, 1);
-
+  background-color: rgb(47, 63, 41);
+  height: 12vh
 }
 
 .title {
   font-size: 50px;
   padding: 20px;
-  color: black;
+  color: rgb(171, 224, 159);
   font-family: 'Courier New', Courier, monospace;
+}
+
+.main {
+  background-image: url('../scenes.png');
+  background-size: cover;
+  /* Adjust how the image fits */
+  background-repeat: repeat;
+  /* Prevent repetition */
+  background-position: center;
+  /* Center the image */
+  height: 90vh;
+  width: 100vw;
+  justify-content: center;
+  display: flex;
 }
 
 /* 

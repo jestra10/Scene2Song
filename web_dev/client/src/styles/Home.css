@@ -2,6 +2,41 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 90vh;
     justify-content: center;
+}
+
+.homePaper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 25vh;
+    width: 40vw;
+    justify-content: baseline;
+    background-color: rgb(47, 63, 41);
+}
+
+.paperTitle {
+    font-size: 35px;
+    padding: 30px;
+    padding-bottom: 45px;
+    color: rgb(171, 224, 159);
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+
+}
+
+.imageButton {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    border-width: 1px;
+    height: 40px;
+    width: 150px;
+    font-weight: 400;
+    background-color: rgb(255, 255, 255);
+}
+
+.fileText {
+    color: rgb(171, 224, 159);
 }

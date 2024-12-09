@@ -18,7 +18,7 @@ function App() {
 
   return <div ><Grid className='header'>
     <div className='title'>Scene2Song</div>
-  </Grid> {clicked ? (loading ? <Loading /> : <Results />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} />} </div >;
+  </Grid> <div className='main'>{clicked ? (loading ? <Loading /> : <Results setClicked={setClicked} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} />}</div></div >;
 }
 
 export default App;
