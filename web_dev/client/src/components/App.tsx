@@ -23,7 +23,7 @@ function App() {
 
 
     return <div ><Grid className='header'>
-        <div className='title'><button className="titleButton" onClick={() => { setClicked(false); setImg(null) }}>Scene2Song</button></div>
+        <div className='title'><button className="titleButton" onClick={() => { setClicked(false); setImg(null); setPreparing(false); setLoading(false); setClassifying(false) }}>Scene2Song</button></div>
     </Grid> <div className='main'>{clicked ? (!resultsReady ? <Uploading classifying={classifying} preparing={preparing} /> : <Results setImg={setImg} setClicked={setClicked} img={img} songs={songs} scene={scene} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} setClassifying={setClassifying} setPreparing={setPreparing} setSongs={setSongs} setResultsReady={setResultsReady} scene={scene} setScene={setScene} />}</div></div >;
 }
 
