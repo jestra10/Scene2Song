@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Grid2, Paper } from '@mui/material';
 import '../styles/Home.css'
+import { Song } from './App.tsx'
 
 interface Props {
     clicked: boolean;
@@ -9,9 +10,12 @@ interface Props {
     setLoading: Dispatch<SetStateAction<boolean>>;
     img: File | null;
     setImg: Dispatch<SetStateAction<File | null>>;
+    setClassifying: Dispatch<SetStateAction<boolean>>;
+    setPreparing: Dispatch<SetStateAction<boolean>>;
+    setSongs: Dispatch<SetStateAction<Song[]>>;
 }
 export function Home(props: Props) {
-    const [data, setData] = useState(null);
+    const [scene, setScene] = useState('');
     const upload = async () => {
         props.setClicked(true); //change the page
         props.setLoading(true)
@@ -35,6 +39,32 @@ export function Home(props: Props) {
             console.log('Upload successful:', result);
         } catch (error) {
             console.error('Upload failed:', error);
+            props.setLoading(false);
+        }
+        try {
+            props.setClassifying(true);
+            const response = await fetch('http://localhost:5001/classify', {
+                method: 'GET'
+            });
+            const result = await response.json();
+            console.log('classify successful:', result);
+            props.setClassifying(false);
+            setScene(result.body)
+        } catch (error) {
+            console.error('classify failed:', error);
+            props.setClassifying(false);
+        }
+        try {
+            props.setPreparing(true);
+            const response = await fetch('http://localhost:5001/songlist=$scene', {
+                method: 'GET'
+            });
+            const result = await response.json();
+            props.setPreparing(false);
+            props.setSongs(result.body);
+            console.log('song list successful:', result);
+        } catch (error) {
+            console.error('song list failed:', error);
             props.setLoading(false);
         }
 

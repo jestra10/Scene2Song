@@ -1,18 +1,13 @@
 import React from "react";
 import { ReactElement, Fragment, useState } from "react";
 import '../styles/Song.css'
-
-interface SongProps {
-    title: string;
-    artist: string;
-    url: string;
-}
+import { Song } from './App.tsx'
 
 interface SongListProps {
-    songs: SongProps[];
+    songs: Song[];
 }
 
-export function Song(props: SongProps) {
+export function Song(props: Song) {
     return (
         <div className="song">
 
@@ -29,7 +24,6 @@ export function SongList(props: SongListProps) {
         <div className="song-list">
             {props.songs.map((song, index) => (
                 <Song
-                    key={index} // Use a unique key for React's reconciliation
                     title={song.title}
                     artist={song.artist}
                     url={song.url}
