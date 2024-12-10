@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Grid2, Paper } from '@mui/material';
 import '../styles/Home.css'
-import { Song } from './App.tsx'
+import { SongProps } from './App.tsx'
 
 interface Props {
     clicked: boolean;
@@ -12,7 +12,7 @@ interface Props {
     setImg: Dispatch<SetStateAction<File | null>>;
     setClassifying: Dispatch<SetStateAction<boolean>>;
     setPreparing: Dispatch<SetStateAction<boolean>>;
-    setSongs: Dispatch<SetStateAction<Song[]>>;
+    setSongs: Dispatch<SetStateAction<SongProps[]>>;
 }
 export function Home(props: Props) {
     const [scene, setScene] = useState('');
@@ -56,7 +56,7 @@ export function Home(props: Props) {
         }
         try {
             props.setPreparing(true);
-            const response = await fetch('http://localhost:5001/songlist=$scene', {
+            const response = await fetch('http://localhost:5001/songlist?scene=${scene}', {
                 method: 'GET'
             });
             const result = await response.json();

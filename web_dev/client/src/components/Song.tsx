@@ -1,13 +1,13 @@
 import React from "react";
 import { ReactElement, Fragment, useState } from "react";
 import '../styles/Song.css'
-import { Song } from './App.tsx'
+import { SongProps } from './App.tsx'
 
 interface SongListProps {
-    songs: Song[];
+    songs: SongProps[];
 }
 
-export function Song(props: Song) {
+export function Song(props: SongProps) {
     return (
         <div className="song">
 

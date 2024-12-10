@@ -3,20 +3,16 @@ import '../styles/Loading.css'
 import '../styles/Home.css'
 import { Grid, Grid2, Paper } from '@mui/material';
 import { SongList } from './Song.tsx';
+import { SongProps } from './App.tsx';
 
 interface Props {
     setClicked: Dispatch<SetStateAction<boolean>>;
     img: File | null;
+    songs: SongProps[]
 }
 export function Results(props: Props) {
 
     const imageUrl = props.img ? URL.createObjectURL(props.img) : undefined;
-
-    const songs = [
-        { title: "Song 1", artist: "Artist 1", url: "https://example.com/song1" },
-        { title: "Song 2", artist: "Artist 2", url: "https://example.com/song2" },
-        { title: "Song 3", artist: "Artist 3", url: "https://example.com/song3" },
-    ];
 
 
 
@@ -39,7 +35,7 @@ export function Results(props: Props) {
         {/* Playlist */}
         <Grid2>
             <div className="centered-div">
-                <SongList songs={songs} />
+                <SongList songs={props.songs} />
             </div>
         </Grid2>
     </Grid2>

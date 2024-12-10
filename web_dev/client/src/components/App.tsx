@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid2';
 import '../styles/App.css'
 import { Uploading } from './Uploading.tsx';
 import { Results } from './Results.tsx';
-export interface Song {
+export interface SongProps {
     title: string;
     artist: string;
     url: string;
@@ -17,11 +17,11 @@ function App() {
     const [img, setImg] = useState<File | null>(null)
     const [classifying, setClassifying] = useState(false)
     const [preparing, setPreparing] = useState(false)
-    const [songs, setSongs] = useState<Song[]>([])
+    const [songs, setSongs] = useState<SongProps[]>([])
 
     return <div ><Grid className='header'>
         <div className='title'>Scene2Song</div>
-    </Grid> <div className='main'>{clicked ? (loading ? <Uploading classifying={classifying} preparing={preparing} /> : <Results setClicked={setClicked} img={img} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} setClassifying={setClassifying} setPreparing={setPreparing} setSongs={setSongs} />}</div></div >;
+    </Grid> <div className='main'>{clicked ? (loading ? <Uploading classifying={classifying} preparing={preparing} /> : <Results setClicked={setClicked} img={img} songs={songs} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} setClassifying={setClassifying} setPreparing={setPreparing} setSongs={setSongs} />}</div></div >;
 }
 
 export default App;
