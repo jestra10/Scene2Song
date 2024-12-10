@@ -8,7 +8,8 @@ import { SongProps } from './App.tsx';
 interface Props {
     setClicked: Dispatch<SetStateAction<boolean>>;
     img: File | null;
-    songs: SongProps[]
+    songs: SongProps[];
+    scene: string;
 }
 export function Results(props: Props) {
 
@@ -31,7 +32,7 @@ export function Results(props: Props) {
         <Grid2>
             <img src={imageUrl} className="resultImg" alt="Result" />
         </Grid2>
-
+        <div style={{ fontWeight: 'bold' }}>{props.scene}</div>
         {/* Playlist */}
         <Grid2>
             <div className="centered-div">

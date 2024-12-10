@@ -13,10 +13,13 @@ interface Props {
     setClassifying: Dispatch<SetStateAction<boolean>>;
     setPreparing: Dispatch<SetStateAction<boolean>>;
     setSongs: Dispatch<SetStateAction<SongProps[]>>;
+    setResultsReady: Dispatch<SetStateAction<boolean>>;
+    setScene: Dispatch<SetStateAction<string>>;
+    scene: string;
 }
 export function Home(props: Props) {
-    const [scene, setScene] = useState('');
     const upload = async () => {
+        props.setResultsReady(false)
         props.setClicked(true); //change the page
         props.setLoading(true)
         if (!props.img) {
@@ -49,19 +52,21 @@ export function Home(props: Props) {
             const result = await response.json();
             console.log('classify successful:', result);
             props.setClassifying(false);
-            setScene(result.body)
+            console.log('classify false')
+            props.setScene(result.body)
         } catch (error) {
             console.error('classify failed:', error);
             props.setClassifying(false);
         }
         try {
             props.setPreparing(true);
-            const response = await fetch('http://localhost:5001/songlist?scene=${scene}', {
+            const response = await fetch('http://localhost:5001/songlist?scene=${props.scene}', {
                 method: 'GET'
             });
             const result = await response.json();
             props.setPreparing(false);
             props.setSongs(result.body);
+            props.setResultsReady(true);
             console.log('song list successful:', result);
         } catch (error) {
             console.error('song list failed:', error);
@@ -77,7 +82,7 @@ export function Home(props: Props) {
                 <Grid2>
                     <div className='paperTitle'>Upload a Scene</div>
                 </Grid2>
-                <input className='fileText' type="file" onChange={(e) => {
+                <input className='fileText' type="file" accept='.png, .jpg, .jpeg' onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
                         props.setImg(e.target.files[0]);
                     }

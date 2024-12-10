@@ -31,11 +31,15 @@ const uploadImg = multer({ storage })
 app.post('/upload', uploadImg.single('file'), (req, res) => {
     console.log(req.body)
     console.log(req.file)
-    res.json({ success: true, message: 'Upload received!' });
+    setTimeout(() => {
+        res.json({ success: true, message: 'Upload received!' });
+    }, 3000)
 });
 
 app.get('/classify', (req, res) => {
-    res.json({ body: 'Beach' });
+    setTimeout(() => {
+        res.json({ body: 'Beach' });
+    }, 3000)
 });
 
 app.get('/songlist', (req, res) => {
@@ -44,13 +48,15 @@ app.get('/songlist', (req, res) => {
         return res.status(400).json({ error: 'Scene and mood parameters are required' });
     }
     try {
-        res.json({
-            body: [
-                { title: "Song 1", artist: "Artist 1", url: "https://example.com/song1" },
-                { title: "Song 2", artist: "Artist 2", url: "https://example.com/song2" },
-                { title: "Song 3", artist: "Artist 3", url: "https://example.com/song3" }
-            ]
-        });
+        setTimeout(() => {
+            res.json({
+                body: [
+                    { title: "Song 1", artist: "Artist 1", url: "https://example.com/song1" },
+                    { title: "Song 2", artist: "Artist 2", url: "https://example.com/song2" },
+                    { title: "Song 3", artist: "Artist 3", url: "https://example.com/song3" }
+                ]
+            });
+        }, 3000)
     } catch (error) {
         console.error('Error fetching song list:', error); // Log the error
         res.status(500).json({ error: 'Internal Server Error' });
