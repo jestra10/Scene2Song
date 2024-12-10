@@ -37,14 +37,14 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 70vh;
-    width: 60vw;
+    height: 68vh;
+    width: 45vw;
     justify-content: flex-start;
     background-color: rgb(47, 63, 41) !important;
     color: rgb(171, 224, 159) !important;
     position: relative;
     /* Keeps the Paper in the document flow */
-    margin: 20px auto;
+    margin: 0px auto;
     /* Centers the Paper horizontally */
     /* Adjust width as needed */
     max-height: 80vh;

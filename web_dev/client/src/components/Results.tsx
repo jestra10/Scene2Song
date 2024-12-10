@@ -21,7 +21,7 @@ export function Results(props: Props) {
     return <div className='loading'> <Paper className='resultsPaper' elevation={5}> <Grid2 container direction="column" spacing={2}>
         {/* Top Row: Your Playlist and Button */}
         <Grid2 container justifyContent="space-between" alignItems="center">
-            <Grid2>Your Playlist</Grid2>
+            <Grid2>Your {props.scene} Playlist</Grid2>
             <Grid2>
                 <button className='imageButton' onClick={() => { props.setClicked(false); props.setImg(null) }}>
                     Try a New Image!
@@ -33,7 +33,7 @@ export function Results(props: Props) {
         <Grid2>
             <img src={imageUrl} className="resultImg" alt="Result" />
         </Grid2>
-        <div style={{ fontWeight: 'bold' }}>{props.scene}</div>
+
         {/* Playlist */}
         <Grid2>
             <div className="centered-div">

@@ -50,6 +50,23 @@
   font-family: 'Courier New', Courier, monospace;
 }
 
+.titleButton {
+  background: none;
+  /* Removes button background */
+  border: none;
+  /* Removes button border */
+  color: inherit;
+  /* Inherits the color from the parent */
+  font: inherit;
+  /* Inherits font style and size */
+  cursor: pointer;
+  /* Changes the cursor to a pointer on hover */
+  padding: 0;
+  /* Removes default button padding */
+  text-decoration: none;
+  /* Removes any underline (if styled as a link) */
+}
+
 .main {
   background-image: url('../scenes.png');
   background-size: cover;
