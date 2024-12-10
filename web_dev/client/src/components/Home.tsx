@@ -70,7 +70,7 @@ export function Home(props: Props) {
             console.log('song list successful:', result);
         } catch (error) {
             console.error('song list failed:', error);
-            props.setLoading(false);
+            props.setPreparing(false);
         }
 
     }

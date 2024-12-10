@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer')
+const getSongListBasedOnScene = require('./spotify.js')
 
 const app = express();
 const PORT = 5001;
@@ -49,12 +50,9 @@ app.get('/songlist', (req, res) => {
     }
     try {
         setTimeout(() => {
+            const songList = getSongListBasedOnScene(scene);
             res.json({
-                body: [
-                    { title: "Song 1", artist: "Artist 1", url: "https://example.com/song1" },
-                    { title: "Song 2", artist: "Artist 2", url: "https://example.com/song2" },
-                    { title: "Song 3", artist: "Artist 3", url: "https://example.com/song3" }
-                ]
+                body: songList
             });
         }, 3000)
     } catch (error) {
@@ -62,4 +60,6 @@ app.get('/songlist', (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
