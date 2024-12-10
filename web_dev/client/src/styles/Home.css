@@ -10,20 +10,19 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 25vh;
+    height: fit-content;
     width: 40vw;
-    justify-content: baseline;
+    justify-content: flex-start;
     background-color: rgb(47, 63, 41) !important;
 }
 
 .paperTitle {
     font-size: 35px;
-    padding: 30px;
-    padding-bottom: 45px;
+    padding: 20px;
     color: rgb(171, 224, 159);
     font-family: 'Courier New', Courier, monospace;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 
 }
 
@@ -39,4 +38,25 @@
 
 .fileText {
     color: rgb(171, 224, 159);
+}
+
+.homeImg {
+    width: 25vw;
+    /* Set desired width */
+    height: auto;
+    max-height: 40vw;
+    /* Maintain aspect ratio */
+    padding-bottom: 10px;
+}
+
+.centerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
 }

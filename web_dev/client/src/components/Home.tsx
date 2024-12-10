@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Grid2, Paper } from '@mui/material';
+import { Grid, Grid2, Paper } from '@mui/material';
 import '../styles/Home.css'
 import { SongProps } from './App.tsx'
 
@@ -82,12 +82,17 @@ export function Home(props: Props) {
                 <Grid2>
                     <div className='paperTitle'>Upload a Scene</div>
                 </Grid2>
-                <input className='fileText' type="file" accept='.png, .jpg, .jpeg' onChange={(e) => {
-                    if (e.target.files && e.target.files.length > 0) {
-                        props.setImg(e.target.files[0]);
-                    }
-                }} />
-                <button className='imageButton' onClick={upload}>Upload Image</button>
+                <Grid2 className='centerContent'>
+                    {props.img == null ? <div></div> : <img src={URL.createObjectURL(props.img)} className="homeImg" alt="Result" />}
+                    <Grid2 className="flexRow"><input className='fileText' type="file" accept='.png, .jpg, .jpeg' onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                            props.setImg(e.target.files[0]);
+                        }
+                    }} />
+
+                        <button className='imageButton' onClick={upload}>Upload Image</button>
+                    </Grid2>
+                </Grid2>
             </Grid2>
         </Paper></div>;
 }

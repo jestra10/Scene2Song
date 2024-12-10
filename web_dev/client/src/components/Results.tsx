@@ -10,6 +10,7 @@ interface Props {
     img: File | null;
     songs: SongProps[];
     scene: string;
+    setImg: Dispatch<SetStateAction<File | null>>;
 }
 export function Results(props: Props) {
 
@@ -22,7 +23,7 @@ export function Results(props: Props) {
         <Grid2 container justifyContent="space-between" alignItems="center">
             <Grid2>Your Playlist</Grid2>
             <Grid2>
-                <button className='imageButton' onClick={() => props.setClicked(false)}>
+                <button className='imageButton' onClick={() => { props.setClicked(false); props.setImg(null) }}>
                     Try a New Image!
                 </button>
             </Grid2>

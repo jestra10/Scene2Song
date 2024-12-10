@@ -24,7 +24,7 @@ function App() {
 
     return <div ><Grid className='header'>
         <div className='title'>Scene2Song</div>
-    </Grid> <div className='main'>{clicked ? (!resultsReady ? <Uploading classifying={classifying} preparing={preparing} /> : <Results setClicked={setClicked} img={img} songs={songs} scene={scene} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} setClassifying={setClassifying} setPreparing={setPreparing} setSongs={setSongs} setResultsReady={setResultsReady} scene={scene} setScene={setScene} />}</div></div >;
+    </Grid> <div className='main'>{clicked ? (!resultsReady ? <Uploading classifying={classifying} preparing={preparing} /> : <Results setImg={setImg} setClicked={setClicked} img={img} songs={songs} scene={scene} />) : <Home clicked={clicked} setClicked={setClicked} loading={loading} setLoading={setLoading} img={img} setImg={setImg} setClassifying={setClassifying} setPreparing={setPreparing} setSongs={setSongs} setResultsReady={setResultsReady} scene={scene} setScene={setScene} />}</div></div >;
 }
 
 export default App;
