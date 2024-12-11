@@ -60,7 +60,7 @@ export function Home(props: Props) {
         }
         try {
             props.setPreparing(true);
-            const response = await fetch('http://localhost:5001/songlist?scene=${props.scene}', {
+            const response = await fetch(`http://localhost:5001/songlist?scene=beach`, {
                 method: 'GET'
             });
             const result = await response.json();
