@@ -10,13 +10,15 @@ from ultralytics import YOLO  # For object detection
 import requests
 from collections import Counter
 import genius_spotify_testing
+import random
 
 # Hugging Face API details
 API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 headers = {"Authorization": "Bearer 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"}
 #IMPORTANT:
-song_number_multiplier = 2
-diversity_multiplier = 1
+song_number_multiplier = 2 #default 1
+diversity_multiplier = 4 #default 1
+scene_breadth = 10 #default 10
 # Scene classification setup
 arch = 'resnet18'
 
@@ -117,7 +119,7 @@ print(f'{arch} prediction on {img_name}')
 
 # Output the scene prediction
 scene_results = []
-for i in range(0, 5):
+for i in range(0, scene_breadth):
     #scene = f'{probs[i]:.3f} -> {classes[idx[i]]}'
     scene = [(float(probs[i])), (classes[idx[i]])]
     print(scene)
@@ -126,11 +128,12 @@ print(scene_results)
 # Object detection with frequency
 detected_objects, most_prevalent_objects = detect_objects_with_frequency(img_name)
 song_list = []
+max_scene = max(scene_results)[0]
 unique_song_list = list(set(song_list))
-if diversity_multiplier > 1: 
+if diversity_multiplier > 1 & max_scene < 65: #need to think of ways to make this more equitable. Need better algorithm
     scene_number = 0
     counter = 0
-    max_scene = max(scene_results)[0]
+    
     for scene in scene_results:
         if scene[0] > max_scene * (1/diversity_multiplier):
             scene_number += float(scene[0])
@@ -145,10 +148,16 @@ for scene in scene_results:
     song_nest = genius_spotify_testing.search_theme_in_lyrics_and_spotify(scene[1])
     print("\nSONG NEST")
     print(song_nest)
-    unique_song_list.append(song_nest[:int(len(song_nest)* song_number_multiplier * float(scene[0]))])
+    if scene[0] <0.1:
+        scene[0] = 0.1 #making sure to include themes that are a little more out there, accurate enough to work
+    scene[0] = song_number_multiplier * scene[0]
+    song_slice = int(len(song_nest)* scene[0])
+     
+    unique_song_list.append(song_nest[:song_slice])
 # Print combined results
+random.shuffle(unique_song_list)
 print("\nSONG LIST")
-unique_song_list = [song for sublist in unique_song_list for song in sublist]
+unique_song_list =[song for sublist in unique_song_list for song in sublist]
 for song in unique_song_list:
     print(f"{song['title']} by {song['artist']} - {song['spotify_url']}")
 print("\n--- Combined Results ---")
