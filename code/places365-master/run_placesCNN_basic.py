@@ -15,8 +15,8 @@ import genius_spotify_testing
 API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 headers = {"Authorization": "Bearer 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"}
 #IMPORTANT:
-diversity_multiplier = 2
-
+song_number_multiplier = 2
+diversity_multiplier = 1
 # Scene classification setup
 arch = 'resnet18'
 
@@ -99,7 +99,7 @@ def generate_spotify_api_call(scene, objects):
     print(output[0]['generated_text'])
 
 # Main logic
-img_name = 'test3.jpg'
+img_name = 'test4.jpg'
 if not os.access(img_name, os.W_OK):
     img_url = f'http://places.csail.mit.edu/demo/{img_name}'
     os.system(f'wget {img_url}')
@@ -119,7 +119,7 @@ print(f'{arch} prediction on {img_name}')
 scene_results = []
 for i in range(0, 5):
     #scene = f'{probs[i]:.3f} -> {classes[idx[i]]}'
-    scene = [(f"{probs[i]:.3f}"), (classes[idx[i]])]
+    scene = [(float(probs[i])), (classes[idx[i]])]
     print(scene)
     scene_results.append(scene)
 print(scene_results)
@@ -127,14 +127,30 @@ print(scene_results)
 detected_objects, most_prevalent_objects = detect_objects_with_frequency(img_name)
 song_list = []
 unique_song_list = list(set(song_list))
+if diversity_multiplier > 1: 
+    scene_number = 0
+    counter = 0
+    max_scene = max(scene_results)[0]
+    for scene in scene_results:
+        if scene[0] > max_scene * (1/diversity_multiplier):
+            scene_number += float(scene[0])
+            counter += 1
+    for scene in scene_results:
+        if scene[0] > max_scene * (1/diversity_multiplier):
+            scene[0] = scene_number/counter
+    print("NEW RESULTS")
+    print(scene_results)
+
 for scene in scene_results:
     song_nest = genius_spotify_testing.search_theme_in_lyrics_and_spotify(scene[1])
     print("\nSONG NEST")
     print(song_nest)
-    unique_song_list.append(song_nest[:int(len(song_nest)* diversity_multiplier * float(scene[0]))])
+    unique_song_list.append(song_nest[:int(len(song_nest)* song_number_multiplier * float(scene[0]))])
 # Print combined results
 print("\nSONG LIST")
-print(unique_song_list)
+unique_song_list = [song for sublist in unique_song_list for song in sublist]
+for song in unique_song_list:
+    print(f"{song['title']} by {song['artist']} - {song['spotify_url']}")
 print("\n--- Combined Results ---")
 print(f"Scene Predictions (Top 5):")
 for scene in scene_results:
