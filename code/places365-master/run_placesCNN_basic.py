@@ -1,8 +1,3 @@
-# PlacesCNN for scene classification with object detection
-#
-# by Bolei Zhou, modified to include object detection
-# Last modified by Matias Gersberg
-
 import cv2
 import torch
 from torch.autograd import Variable as V
@@ -12,9 +7,15 @@ from torch.nn import functional as F
 import os
 from PIL import Image
 from ultralytics import YOLO  # For object detection
-import ultralytics
-print(f"Ultralytics version: {ultralytics.__version__}")
-import matplotlib.pyplot as plt
+import requests
+from collections import Counter
+import genius_spotify_testing
+
+# Hugging Face API details
+API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
+headers = {"Authorization": "Bearer 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"}
+#IMPORTANT:
+diversity_multiplier = 2
 
 # Scene classification setup
 arch = 'resnet18'
@@ -50,8 +51,8 @@ with open(file_name) as class_file:
         classes.append(line.strip().split(' ')[0][3:])
 classes = tuple(classes)
 
-# Object detection setup
-def detect_objects(image_path):
+# Object detection setup with frequency counting
+def detect_objects_with_frequency(image_path):
     # Load the YOLOv5 model
     model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
     print("YOLOv5 model loaded successfully!")
@@ -64,11 +65,41 @@ def detect_objects(image_path):
     for row in results.pandas().xyxy[0].itertuples():
         detected_objects.append(row.name)  # 'name' is the object class name
 
-    return detected_objects
+    # Count frequencies of detected objects
+    object_counts = Counter(detected_objects)
+    most_prevalent_objects = object_counts.most_common(5)  # Top 5 objects by frequency
 
+    return detected_objects, most_prevalent_objects
 
-# Load the test image
-img_name = 'test2.jpg'
+# Query the Hugging Face API
+def query(prompt):
+    response = requests.post(
+        API_URL,
+        headers=headers,
+        json={
+            "inputs": prompt,
+            "parameters": {
+                "max_length": 200,  # Adjust this value as needed
+                "temperature": 0.0,  # Optional: Add variability to the response
+            },
+        },
+    )
+    response.raise_for_status()
+    return response.json()
+
+def generate_spotify_api_call(scene, objects):
+    # Construct a prompt for the Hugging Face model
+    print(scene)
+    prompt = f"""
+    You are a helpful assistant. Answer the following question: What is 2 + 2 in math equal to?
+    """
+    # Query the Hugging Face API
+    output = query(prompt)
+    print("\n--- Spotify API Call ---")
+    print(output[0]['generated_text'])
+
+# Main logic
+img_name = 'test3.jpg'
 if not os.access(img_name, os.W_OK):
     img_url = f'http://places.csail.mit.edu/demo/{img_name}'
     os.system(f'wget {img_url}')
@@ -80,12 +111,38 @@ input_img = V(centre_crop(img).unsqueeze(0))
 logit = model.forward(input_img)
 h_x = F.softmax(logit, 1).data.squeeze()
 probs, idx = h_x.sort(0, True)
+scene = classes[idx[0]]  # Top scene classification result
 
 print(f'{arch} prediction on {img_name}')
-# Output the scene prediction
-for i in range(0, 5):
-    print(f'{probs[i]:.3f} -> {classes[idx[i]]}')
 
-# Object detection
-detected_objects = detect_objects(img_name)
-print(f'Detected Objects: {", ".join(detected_objects)}')
+# Output the scene prediction
+scene_results = []
+for i in range(0, 5):
+    #scene = f'{probs[i]:.3f} -> {classes[idx[i]]}'
+    scene = [(f"{probs[i]:.3f}"), (classes[idx[i]])]
+    print(scene)
+    scene_results.append(scene)
+print(scene_results)
+# Object detection with frequency
+detected_objects, most_prevalent_objects = detect_objects_with_frequency(img_name)
+song_list = []
+unique_song_list = list(set(song_list))
+for scene in scene_results:
+    song_nest = genius_spotify_testing.search_theme_in_lyrics_and_spotify(scene[1])
+    print("\nSONG NEST")
+    print(song_nest)
+    unique_song_list.append(song_nest[:int(len(song_nest)* diversity_multiplier * float(scene[0]))])
+# Print combined results
+print("\nSONG LIST")
+print(unique_song_list)
+print("\n--- Combined Results ---")
+print(f"Scene Predictions (Top 5):")
+for scene in scene_results:
+    print(f"  - {scene}")
+
+print("\nMost Prevalent Objects (Top 5):")
+for obj, count in most_prevalent_objects:
+    print(f"  - {obj}: {count} occurrences")
+
+# Generate Spotify API call
+generate_spotify_api_call(scene_results, detected_objects)
