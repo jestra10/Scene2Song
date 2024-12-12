@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer')
-const getSongListBasedOnScene = require('./spotify.js')
+const { getSongListBasedOnScene, getCredentials } = require('./spotify.js')
 
 const app = express();
 const PORT = 5001;
@@ -46,9 +46,10 @@ app.get('/classify', (req, res) => {
 app.get('/songlist', (req, res) => {
     const scene = req.query.scene; // Destructure query parameters
     if (!scene) {
-        return res.status(400).json({ error: 'Scene and mood parameters are required' });
+        return res.status(400).json({ error: 'Scene parameters are required' });
     }
     try {
+        getCredentials()
         setTimeout(() => {
             const songList = getSongListBasedOnScene(scene);
             res.json({
@@ -60,6 +61,9 @@ app.get('/songlist', (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
