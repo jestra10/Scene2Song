@@ -1,3 +1,4 @@
+const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -37,9 +38,12 @@ app.post('/upload', uploadImg.single('file'), (req, res) => {
     }, 3000)
 });
 
-app.get('/classify', (req, res) => {
-    setTimeout(() => {
-        res.json({ body: 'Beach' });
+app.get('/classify', async (req, res) => {
+    setTimeout(async () => {
+        const param1 = 'categories_places365.txt';
+        const response = await axios.get(`http://localhost:5004/classify?filepath=${param1}`);
+        const result = await response.data;
+        res.json({ songs: result.songs, scenes: result.scenes});
     }, 3000)
 });
 
