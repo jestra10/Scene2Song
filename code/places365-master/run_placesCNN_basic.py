@@ -130,7 +130,7 @@ detected_objects, most_prevalent_objects = detect_objects_with_frequency(img_nam
 song_list = []
 max_scene = max(scene_results)[0]
 unique_song_list = list(set(song_list))
-if diversity_multiplier > 1 & max_scene < 65: #need to think of ways to make this more equitable. Need better algorithm
+if diversity_multiplier > 1 and max_scene < 0.65: #need to think of ways to make this more equitable. Need better algorithm
     scene_number = 0
     counter = 0
     
