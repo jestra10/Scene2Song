@@ -49,7 +49,7 @@ def classify():
     ])
 
     # Load the class labels
-    file_name = filepath
+    file_name = 'categories_places365.txt'
     if not os.access(file_name, os.W_OK):
         synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
         os.system(f'wget {synset_url}')
@@ -107,7 +107,7 @@ def classify():
         print(output[0]['generated_text'])
 
     # Main logic
-    img_name = 'test4.jpg'
+    img_name = filepath
     if not os.access(img_name, os.W_OK):
         img_url = f'http://places.csail.mit.edu/demo/{img_name}'
         os.system(f'wget {img_url}')

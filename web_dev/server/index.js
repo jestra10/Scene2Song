@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer')
 const { getSongListBasedOnScene, getCredentials } = require('./spotify.js')
+const path = require('path');
 
 const app = express();
 const PORT = 5001;
@@ -33,15 +34,17 @@ const uploadImg = multer({ storage })
 app.post('/upload', uploadImg.single('file'), (req, res) => {
     console.log(req.body)
     console.log(req.file)
+    const filePath = req.file.path;
+    const fullFilePath = path.resolve(filePath);
     setTimeout(() => {
-        res.json({ success: true, message: 'Upload received!' });
+        res.json({ success: true, message: 'Upload received!', file: fullFilePath });
     }, 3000)
 });
 
 app.get('/classify', async (req, res) => {
     setTimeout(async () => {
-        const param1 = 'categories_places365.txt';
-        const response = await axios.get(`http://localhost:5004/classify?filepath=${param1}`);
+        const {filepath} = req.query;
+        const response = await axios.get(`http://localhost:5004/classify?filepath=${filepath}`);
         const result = await response.data;
         res.json({ songs: result.songs, scenes: result.scenes});
     }, 3000)

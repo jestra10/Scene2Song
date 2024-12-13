@@ -31,6 +31,7 @@ export function Home(props: Props) {
         }
         const formData = new FormData()
         formData.append('file', props.img)
+        // let filePath: string = ''; 
         try {
             const response = await fetch('http://localhost:5001/upload', {
                 method: 'POST',
@@ -40,25 +41,27 @@ export function Home(props: Props) {
             console.log("setting loading off")
             props.setLoading(false);
             console.log('Upload successful:', result);
-        } catch (error) {
-            console.error('Upload failed:', error);
-            props.setLoading(false);
-        }
-        try {
+            const filePath = result.file
+        // } catch (error) {
+        //     console.error('Upload failed:', error);
+        //     props.setLoading(false);
+        // }
+        // try {
             props.setClassifying(true);
-            const response = await fetch('http://localhost:5001/classify', {
+            console.log(filePath)
+            const response1 = await fetch(`http://localhost:5001/classify?filepath=${filePath}`, {
                 method: 'GET'
             });
-            const result = await response.json();
-            console.log('classify successful:', result);
+            const result1 = await response1.json();
+            console.log('classify successful:', result1);
             props.setClassifying(false);
             console.log('classify false')
-            props.setScene(result.scenes)
+            props.setScene(result1.scenes)
             props.setPreparing(false);
-            props.setSongs(result.songs);
-            console.log(result.songs)
+            props.setSongs(result1.songs);
+            console.log(result1.songs)
             props.setResultsReady(true);
-            console.log('song list successful:', result);
+            console.log('song list successful:', result1);
         } catch (error) {
             console.error('classify failed:', error);
             props.setClassifying(false);
