@@ -7,7 +7,7 @@ import { Results } from './Results.tsx';
 export interface SongProps {
     title: string;
     artist: string;
-    url: string;
+    spotify_url: string;
 }
 
 function App() {

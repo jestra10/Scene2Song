@@ -53,21 +53,26 @@ export function Home(props: Props) {
             console.log('classify successful:', result);
             props.setClassifying(false);
             console.log('classify false')
-            props.setScene(result.body)
+            props.setScene(result.scenes)
+            props.setPreparing(false);
+            props.setSongs(result.songs);
+            console.log(result.songs)
+            props.setResultsReady(true);
+            console.log('song list successful:', result);
         } catch (error) {
             console.error('classify failed:', error);
             props.setClassifying(false);
         }
         try {
-            props.setPreparing(true);
-            const response = await fetch(`http://localhost:5001/songlist?scene=beach`, {
-                method: 'GET'
-            });
-            const result = await response.json();
-            props.setPreparing(false);
-            props.setSongs(result.body);
-            props.setResultsReady(true);
-            console.log('song list successful:', result);
+            // props.setPreparing(true);
+            // const response = await fetch(`http://localhost:5001/songlist?scene=beach`, {
+            //     method: 'GET'
+            // });
+            // const result = await response.json();
+            // props.setPreparing(false);
+            // props.setSongs(result.body);
+            // props.setResultsReady(true);
+            // console.log('song list successful:', result);
         } catch (error) {
             console.error('song list failed:', error);
             props.setPreparing(false);

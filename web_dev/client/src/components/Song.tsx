@@ -11,7 +11,7 @@ export function Song(props: SongProps) {
     return (
         <div className="song">
 
-            <div><a href={props.url} target="_blank" rel="noopener noreferrer">
+            <div><a href={props.spotify_url} target="_blank" rel="noopener noreferrer">
                 {props.title}
             </a></div>
             <div>{props.artist}</div>
@@ -26,7 +26,7 @@ export function SongList(props: SongListProps) {
                 <Song
                     title={song.title}
                     artist={song.artist}
-                    url={song.url}
+                    spotify_url={song.spotify_url}
                 />
             ))}
         </div>
