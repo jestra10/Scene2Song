@@ -12,19 +12,24 @@ from collections import Counter
 import genius_spotify_testing
 import random
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/classify', methods=['GET'])
 def classify():
     filepath = request.args.get('filepath')  # Retrieve parameter 1
+    song_number_multiplier = int(request.args.get('list_len'))
+    diversity_multiplier = int(request.args.get('diversity'))
+    print('params: \n')
+    print(song_number_multiplier)
+    print(diversity_multiplier)
+    scene_breadth = 10 #default 10
     # Hugging Face API details
     API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
     headers = {"Authorization": "Bearer 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"}
-    #IMPORTANT:
-    song_number_multiplier = 2 #default 1
-    diversity_multiplier = 4 #default 1
-    scene_breadth = 10 #default 10
+     
     # Scene classification setup
     arch = 'resnet18'
 
