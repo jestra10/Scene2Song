@@ -1,4 +1,3 @@
-import cv2
 import torch
 from torch.autograd import Variable as V
 import torchvision.models as models
