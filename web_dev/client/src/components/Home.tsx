@@ -16,6 +16,10 @@ interface Props {
     setResultsReady: Dispatch<SetStateAction<boolean>>;
     setScene: Dispatch<SetStateAction<string>>;
     scene: string;
+    diversity: Number;
+    setDiversity: Dispatch<SetStateAction<Number>>;
+    playlist_len: Number;
+    setPlaylist_len: Dispatch<SetStateAction<Number>>;
 }
 export function Home(props: Props) {
     const upload = async () => {
@@ -31,7 +35,6 @@ export function Home(props: Props) {
         }
         const formData = new FormData()
         formData.append('file', props.img)
-        // let filePath: string = ''; 
         try {
             const response = await fetch('http://localhost:5001/upload', {
                 method: 'POST',
@@ -42,21 +45,18 @@ export function Home(props: Props) {
             props.setLoading(false);
             console.log('Upload successful:', result);
             const filePath = result.file
-        // } catch (error) {
-        //     console.error('Upload failed:', error);
-        //     props.setLoading(false);
-        // }
-        // try {
+
             props.setClassifying(true);
             console.log(filePath)
-            const response1 = await fetch(`http://localhost:5001/classify?filepath=${filePath}`, {
+            const response1 = await fetch(`http://localhost:5004/classify?filepath=${filePath}&diversity=${props.diversity}&list_len=${props.playlist_len}`, {
                 method: 'GET'
             });
             const result1 = await response1.json();
             console.log('classify successful:', result1);
             props.setClassifying(false);
             console.log('classify false')
-            props.setScene(result1.scenes)
+
+            props.setScene(result1.scenes[1])
             props.setPreparing(false);
             props.setSongs(result1.songs);
             console.log(result1.songs)
@@ -66,39 +66,33 @@ export function Home(props: Props) {
             console.error('classify failed:', error);
             props.setClassifying(false);
         }
-        try {
-            // props.setPreparing(true);
-            // const response = await fetch(`http://localhost:5001/songlist?scene=beach`, {
-            //     method: 'GET'
-            // });
-            // const result = await response.json();
-            // props.setPreparing(false);
-            // props.setSongs(result.body);
-            // props.setResultsReady(true);
-            // console.log('song list successful:', result);
-        } catch (error) {
-            console.error('song list failed:', error);
-            props.setPreparing(false);
-        }
 
     }
 
 
     return <div className='homePage'>
         <Paper className="homePaper" elevation={5}>
-            <Grid2>
-                <Grid2>
+            <Grid2 className='centerContent'>
+                <Grid2 >
                     <div className='paperTitle'>Upload a Scene</div>
                 </Grid2>
                 <Grid2 className='centerContent'>
-                    {props.img == null ? <div></div> : <img src={URL.createObjectURL(props.img)} className="homeImg" alt="Result" />}
-                    <Grid2 className="flexRow"><input className='fileText' type="file" accept='.png, .jpg, .jpeg' onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                            props.setImg(e.target.files[0]);
-                        }
-                    }} />
+                    <Grid2>{props.img == null ? <div></div> : <img src={URL.createObjectURL(props.img)} className="homeImg" alt="Result" />}</Grid2>
+                    <Grid2 className="flexRow">
+                        <Grid2 className='rowItem'> <input className='fileText' type="file" accept='.png, .jpg, .jpeg' onChange={(e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                                props.setImg(e.target.files[0]);
+                            }
+                        }} /> </Grid2>
+                        <Grid2 className='rowItem'>
+                            <button className='imageButton' onClick={upload}>Upload Image</button>
+                        </Grid2>
+                    </Grid2>
+                    <Grid2 className='flexRow'> <Grid2 className='rowItem'>Diversity Multiplier: <input type='Number' min={1} max={10} defaultValue={3} onChange={(e) => { props.setDiversity(Number(e.target.value)) }}>
+                    </input></Grid2>
+                        <Grid2 className='rowItem'>
+                            Song Number Multiplier: <input type='Number' min={1} max={5} defaultValue={1} onChange={(e) => { props.setPlaylist_len(Number(e.target.value)) }}></input></Grid2>
 
-                        <button className='imageButton' onClick={upload}>Upload Image</button>
                     </Grid2>
                 </Grid2>
             </Grid2>

@@ -18,6 +18,7 @@ export function Results(props: Props) {
 
 
 
+
     return <div className='loading'> <Paper className='resultsPaper' elevation={5}> <Grid2 container direction="column" spacing={2}>
         {/* Top Row: Your Playlist and Button */}
         <Grid2 container justifyContent="space-between" alignItems="center">

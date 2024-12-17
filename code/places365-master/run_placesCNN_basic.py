@@ -12,19 +12,24 @@ from collections import Counter
 import genius_spotify_testing
 import random
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/classify', methods=['GET'])
 def classify():
     filepath = request.args.get('filepath')  # Retrieve parameter 1
+    song_number_multiplier = int(request.args.get('list_len'))
+    diversity_multiplier = int(request.args.get('diversity'))
+    print('params: \n')
+    print(song_number_multiplier)
+    print(diversity_multiplier)
+    scene_breadth = 10 #default 10
     # Hugging Face API details
     API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
     headers = {"Authorization": "Bearer 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"}
-    #IMPORTANT:
-    song_number_multiplier = 2 #default 1
-    diversity_multiplier = 4 #default 1
-    scene_breadth = 10 #default 10
+     
     # Scene classification setup
     arch = 'resnet18'
 
@@ -60,24 +65,24 @@ def classify():
     classes = tuple(classes)
 
     # Object detection setup with frequency counting
-    def detect_objects_with_frequency(image_path):
-        # Load the YOLOv5 model
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-        print("YOLOv5 model loaded successfully!")
+    # def detect_objects_with_frequency(image_path):
+    #     # Load the YOLOv5 model
+    #     model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+    #     print("YOLOv5 model loaded successfully!")
 
-        # Perform inference
-        results = model(image_path)
+    #     # Perform inference
+    #     results = model(image_path)
 
-        # Extract detected object names
-        detected_objects = []
-        for row in results.pandas().xyxy[0].itertuples():
-            detected_objects.append(row.name)  # 'name' is the object class name
+    #     # Extract detected object names
+    #     detected_objects = []
+    #     for row in results.pandas().xyxy[0].itertuples():
+    #         detected_objects.append(row.name)  # 'name' is the object class name
 
-        # Count frequencies of detected objects
-        object_counts = Counter(detected_objects)
-        most_prevalent_objects = object_counts.most_common(5)  # Top 5 objects by frequency
+    #     # Count frequencies of detected objects
+    #     object_counts = Counter(detected_objects)
+    #     most_prevalent_objects = object_counts.most_common(5)  # Top 5 objects by frequency
 
-        return detected_objects, most_prevalent_objects
+    #     return detected_objects, most_prevalent_objects 
 
     # Query the Hugging Face API
     def query(prompt):
@@ -132,7 +137,6 @@ def classify():
         scene_results.append(scene)
     print(scene_results)
     # Object detection with frequency
-    detected_objects, most_prevalent_objects = detect_objects_with_frequency(img_name)
     song_list = []
     max_scene = max(scene_results)[0]
     unique_song_list = list(set(song_list))
@@ -171,12 +175,6 @@ def classify():
     for scene in scene_results:
         print(f"  - {scene}")
 
-    print("\nMost Prevalent Objects (Top 5):")
-    for obj, count in most_prevalent_objects:
-        print(f"  - {obj}: {count} occurrences")
-
-    # Generate Spotify API call
-    generate_spotify_api_call(scene_results, detected_objects)
     return jsonify({'songs': unique_song_list, 'scenes': scene_results[0]})
 
 if __name__ == "__main__":

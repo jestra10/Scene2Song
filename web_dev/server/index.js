@@ -43,10 +43,10 @@ app.post('/upload', uploadImg.single('file'), (req, res) => {
 
 app.get('/classify', async (req, res) => {
     setTimeout(async () => {
-        const {filepath} = req.query;
-        const response = await axios.get(`http://localhost:5004/classify?filepath=${filepath}`);
+        const { filepath, diversity, list_len } = req.query;
+        const response = await axios.get(`http://localhost:5004/classify?filepath=${filepath}&diversity=${diversity}&list_len=${list_len}`);
         const result = await response.data;
-        res.json({ songs: result.songs, scenes: result.scenes});
+        res.json({ songs: result.songs, scenes: result.scenes });
     }, 3000)
 });
 
